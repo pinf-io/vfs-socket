@@ -391,6 +391,8 @@ function Consumer() {
         return callback(null, meta);
     }
 
+    var self_consumer = this;
+
     // Return fake endpoints in the initial return till we have the real ones.
     function route(name) {
         return function (path, options, callback) {
@@ -399,6 +401,12 @@ function Consumer() {
                 options.stream = storeStream(options.stream);
             }
             return remote[name].call(this, path, options, function (err, meta) {
+                // Also throw error in consumer so that connection can be
+                // recycled intelligently where consumer was created vs
+                // where vfs instance is used.
+                if (err && err.code === "ENOTCONNECTED") {
+                    self_consumer.emit("error", err);
+                }
                 processCallback(err, meta, callback);
             });
         };
