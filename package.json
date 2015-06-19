@@ -13,12 +13,6 @@
     "dependencies": {
         "smith": "~0.1.17"
     },
-    "devDependencies": {
-        "chai": "~1.2.0",
-        "mocha": "~1.11.0",
-        "vfs-lint": "~0.0.0",
-        "vfs-local": "~0.3.12"
-    },
     "optionalDependencies": {},
     "scripts": {
         "test": "git clean -df test/mock; mocha -R spec"
